@@ -11,3 +11,4 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 	List<Topico> findByCursoNome(String nomeCurso);
 
 }
+ 
