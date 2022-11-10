@@ -51,8 +51,10 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
 				.antMatchers(HttpMethod.POST, "/auth").permitAll()
 				.antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-				.anyRequest().authenticated().and().csrf()
-				.disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.antMatchers(HttpMethod.DELETE, "/topicos/*").hasRole("MODERADOR")
+				.anyRequest().authenticated()
+				.and().csrf().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository),
 						UsernamePasswordAuthenticationFilter.class);
 	}
@@ -64,7 +66,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 				"/swagger-resources/**");
 	}
 
-//	pra gerar o decript da senha para substituir no banco, apenas para exemplo
+	// pra gerar o decript da senha para substituir no banco, apenas para exemplo
 //	public static void main(String[] args) {
 //	System.out.println(new BCryptPasswordEncoder().encode("123456"));
 //	}
